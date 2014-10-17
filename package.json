@@ -1,5 +1,5 @@
 {
-  "name": "ajaj",
+  "name": "ajaja",
   "version": "0.0.1",
   "description": "An Asynchronous Javascript and JSON library.",
   "main": "index.js",
@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "ajaja",
     "ajaj",
     "ajax",
     "xhr"
