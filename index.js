@@ -9,7 +9,7 @@ module.exports = function( _options, callback ) {
         url: '//' + ( _options.host ? _options.host : ( _options.hostname + ( _options.port ? ':' + _options.port : '' ) ) ) + _options.path,
         responseType: 'application/json',
         headers: {},
-        withCredentials: false
+        withCredentials: true
     }, _options );
     
     var data = options.data;
@@ -62,6 +62,20 @@ module.exports = function( _options, callback ) {
         } );
         
         response.on( 'end', function() {
+            
+            if ( response.statusCode < 200 || response.statusCode >= 400 ) {
+                var error = {
+                    code: response.statusCode,
+                    error: buffer
+                };
+                
+                if ( callback ) {
+                    callback( error );
+                }
+                
+                return;
+            }
+            
             try {
                 var obj = JSON.parse( buffer );
                 if ( callback ) {
