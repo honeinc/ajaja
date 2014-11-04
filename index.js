@@ -76,16 +76,19 @@ module.exports = function( _options, callback ) {
                 return;
             }
             
+            var obj;
+            
             try {
-                var obj = JSON.parse( buffer );
-                if ( callback ) {
-                    callback( null, obj );
-                }
+                obj = JSON.parse( buffer );
             }
             catch( ex ) {
                 if ( callback ) {
                     callback( ex, buffer );
                 }
+            }
+
+            if ( callback ) {
+                callback( null, obj );
             }
         } );
     } );

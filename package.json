@@ -1,6 +1,6 @@
 {
   "name": "ajaja",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An Asynchronous Javascript and JSON library.",
   "main": "index.js",
   "scripts": {
