@@ -7,21 +7,21 @@ var url = require( 'url' );
 module.exports = function( _options, callback ) {
     var options = extend( true, {
         url: '//' + ( _options.host ? _options.host : ( _options.hostname + ( _options.port ? ':' + _options.port : '' ) ) ) + _options.path,
-        responseType: 'application/json',
+        responseType: 'json',
         headers: {},
         withCredentials: true
     }, _options );
-    
+
     var data = options.data;
     delete options.data;
-    
+
     var parsedURI = url.parse( options.url, false, true );
     delete options.url;
-    
+
     options.hostname = options.hostname || parsedURI.hostname;
     options.port = options.port || parsedURI.port;
     options.path = options.path || parsedURI.path;
-    
+
     var dataString;
     if ( typeof( data ) !== 'undefined' ) {
         if ( options.method.toLowerCase() === 'get' ) {
@@ -29,7 +29,7 @@ module.exports = function( _options, callback ) {
             for ( var key in data ) {
                 pairs.push( encodeURIComponent( key ) + '=' + encodeURIComponent( data[ key ] ) );
             }
-            
+
             options.path += ( ( options.path.indexOf( '?' ) !== -1 ) ? '&' : '?' ) + pairs.join( '&' );
         }
         else {
@@ -43,10 +43,10 @@ module.exports = function( _options, callback ) {
                     callback( ex );
                 }
                 return;
-            }        
+            }
         }
     }
-    
+
     var buffer;
     var request = http.request( options, function( response ) {
 
@@ -55,29 +55,29 @@ module.exports = function( _options, callback ) {
                 callback( error );
             }
         } );
-        
+
         response.on( 'data', function( _buffer ) {
             buffer = buffer || '';
             buffer += _buffer;
         } );
-        
+
         response.on( 'end', function() {
-            
+
             if ( response.statusCode < 200 || response.statusCode >= 400 ) {
                 var error = {
                     code: response.statusCode,
                     error: buffer
                 };
-                
+
                 if ( callback ) {
                     callback( error );
                 }
-                
+
                 return;
             }
-            
+
             var obj;
-            
+
             try {
                 obj = JSON.parse( buffer );
             }
@@ -92,10 +92,10 @@ module.exports = function( _options, callback ) {
             }
         } );
     } );
-    
+
     if ( dataString ) {
         request.write( dataString );
     }
-    
+
     request.end();
 };
